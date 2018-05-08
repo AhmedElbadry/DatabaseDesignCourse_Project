@@ -1,0 +1,123 @@
+#login-section{
+    padding-top: 150px;
+    min-height: 100vh;
+    background-image: url('../images/login.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+#login-section:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(41, 61, 78, 0.97);
+    z-index: 0;
+}
+#login-section h1{
+    color: #fff;
+    font-family: roboto_light;
+    text-transform: uppercase;
+    word-spacing: 5px;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 1;
+}
+#login-section h1 span{
+    font-family: roboto_bold;
+}
+#login-section #login-form{
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+#login-section #login-form .input-o{
+    margin-bottom: 15px;
+}
+#login-section #login-form .input-o:nth-of-type(2){
+    margin-bottom: 25px;
+}
+#login-section #login-form .input-o span{
+    display: inline-block;
+    background-color: #21303d;
+    border-radius: 50px;
+    padding: 15px 25px;
+    font-size: 0;
+    vertical-align: middle;
+    position: relative;
+    z-index: 2;
+}
+#login-section #login-form .input-o span img{
+    height: 22px;
+    width: 22px;
+    vertical-align: middle;
+}
+#login-section #login-form .input-o input{
+    border: 0;
+    outline: 0;
+    padding: 15px 25px 15px 65px;
+    line-height: 22px;
+    vertical-align: middle;
+    margin-left: -50px;
+    border-radius: 50px;
+    background-color: #253645;
+    color: #c9c9c9;
+    width: 300px;
+    transition: background-color .3s ease-in-out;
+}
+#login-section #login-form .input-o input:focus{
+    background-color: #1c2933;
+}
+#login-section #login-form .input-o input::placeholder {
+    color: #516678;
+    opacity: 1; /* Firefox */
+}
+
+#login-section #login-form .login-o input{
+    color: #fff;
+    border: 0;
+    outline: 0;
+    padding: 15px 40px;
+    background-color: #d35a5a;
+    text-transform: uppercase;
+    font-family: roboto_bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+#login-section #login-form .login-o input:hover{
+    background-color: #be5151;
+}
+#login-section .form-result{
+    margin-top: 25px;
+    position: relative;
+    z-index: 5;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+    word-spacing: 5px;
+}
+#login-section .sign-up{
+    margin-top: 20px;
+    position: relative;
+    z-index: 5;
+    text-transform: capitalize;
+    color: #fff;
+    text-align: center;
+}
+#login-section .sign-up a{
+    color: #fff;
+    text-decoration: none;
+}
+.signed{
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #41ce6c;
+}

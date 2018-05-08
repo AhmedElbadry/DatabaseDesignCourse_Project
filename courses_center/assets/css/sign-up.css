@@ -1,0 +1,56 @@
+#sign-up-section{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    min-height: 100vh;
+    background-image: url('../images/login.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+#sign-up-section:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(41, 61, 78, 0.97);
+    z-index: 0;
+}
+#sign-up-section .content{
+    position: relative;
+    z-index: 2;
+}
+#sign-up-section #student-signup-form,
+#sign-up-section #teacher-signup-form{
+    display: none;
+}
+#sign-up-section .type{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+#sign-up-section .type input:first-of-type{
+    margin-right: 20px;
+}
+#sign-up-section .type input{
+    transition: all .55s ease-in-out;
+}
+#sign-up-section .type input.active{
+    background-color: #41ce6c;
+}
+#sign-up-section .type input.active:hover{
+    background-color: #41ce6c;
+}
+#sign-up-section .sign-up-form .input-o{
+    margin-bottom: 20px;
+}
+#sign-up-section .sign-up-form .input-o input:first-of-type{
+    margin-right: 20px;
+}
+.result,
+.res{
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #fff;
+    word-spacing: 5px;
+}

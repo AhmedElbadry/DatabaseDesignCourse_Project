@@ -1,0 +1,65 @@
+@font-face{
+    src: url(../fonts/Roboto-Bold.ttf);
+    font-family: roboto_bold;
+}
+@font-face{
+    src: url(../fonts/Roboto-Regular.ttf);
+    font-family: roboto_regular;
+}
+@font-face{
+    src: url(../fonts/Roboto-Light.ttf);
+    font-family: roboto_light;
+}
+body{
+    background-color: #293d4e;
+}
+p{
+    font-family: roboto_light;
+}
+input,
+a{
+    font-family: roboto_regular;
+}
+h1,
+h2,
+h3,
+h4,
+h5{
+    font-family: roboto_bold;
+    color: #fff;
+    text-transform: uppercase;
+    word-spacing: 5px;
+}
+.custom-input{
+    border: 0;
+    outline: 0;
+    padding: 15px 25px;
+    line-height: 22px;
+    border-radius: 50px;
+    background-color: #253645;
+    color: #c9c9c9;
+    transition: background-color .3s ease-in-out;
+    width: 300px;
+}
+.custom-input:focus{
+    background-color: #1c2933;
+}
+.custom-input::placeholder{
+    color: #516678;
+    opacity: 1; /* Firefox */
+}
+.custom-button{
+    color: #fff;
+    border: 0;
+    outline: 0;
+    padding: 15px 40px;
+    background-color: #d35a5a;
+    text-transform: uppercase;
+    font-family: roboto_bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color .3s ease-in-out;
+}
+.custom-button:hover{
+    background-color: #be5151;
+}
