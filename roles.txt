@@ -1,0 +1,7 @@
+== Manager ==
+> view, edit, add, remove(students, courses, teachers, employees)
+
+
+
+== Employee ==
+> view, edit, add(students, courses, teachers)

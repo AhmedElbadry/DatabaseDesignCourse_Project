@@ -30,9 +30,79 @@
                             $teacherId = getSingleValue('teacher', 'user_id', $userId, 'teacher_id', $conn);
                             $teacherName = getSingleValue('users', 'user_id', $userId, 'user_name', $conn);
                             $teacherPhone = getSingleValue('users', 'user_id', $userId, 'user_phone', $conn);
+                            //calculate and update earnings from his enrollments and number of students in each enrollment.
+                            $courseId = array();
+                            $courseId = getAllValues('teacher_enrollment', 'teacher_id', $teacherId, 'course_id', $conn);
+                            $numOfStudents = array();
+                            $arrayLength = count($courseId);
+
+                            $calc = 0;
+                            for ($i = 0; $i<$arrayLength; $i++) {
+                                //calculate and update Number of students in each teacher_enrollment from student_enrollment.
+                                $que = "SELECT * FROM `student_enrollment` WHERE `teacher_id`= ".$teacherId." AND `course_id`= ".$courseId[$i];
+                                $q = $conn->query($que);
+                                $f = $q->fetchAll();
+                                $f = count($f);
+
+                                $que="UPDATE `teacher_enrollment` SET `course_students` = ".$f." WHERE `teacher_id`=".$teacherId." AND `course_id`=".$courseId[$i];
+                                $conn->query($que);
+
+                                $numOfStudents = getAllValues('teacher_enrollment', 'teacher_id', $teacherId, 'course_students', $conn);
+                                $calc += getSingleValue('course', 'course_id', $courseId[$i], 'course_price', $conn) * $numOfStudents[$i];
+                            }
+
+                            $calc = $calc * 0.5;
+                            
+
+                            $conn->query("UPDATE `teacher` SET `teacher_earnings` = ".$calc." WHERE `teacher_id` = ".$teacherId." ;");
+
                             $teacherEarnings = getSingleValue('teacher', 'user_id', $userId, 'teacher_earnings', $conn);
                         ?>
+                        
+                        <!-- remove here -->
+                        <?php
+                                if (isset($_GET['remove'])){
+                                    $removeId = $_POST['removeid'];
+                                    $q = "DELETE FROM `teacher_enrollment` WHERE `teacher_id` = ".$teacherId." AND `course_id` = ".$removeId.";";
+                                    $q2 = "DELETE FROM `student_enrollment` WHERE `teacher_id` = ".$teacherId." AND `course_id` = ".$removeId.";";
+                                    $conn->query($q);
+                                    $conn->query($q2);
+                                    header("Location:teacher.php");
+                                } 
 
+                        ?>
+
+                        <!-- Adding here -->
+                        <?php
+                                if (isset($_GET['new-course'])){
+                                    $addName = $_POST['courseName'];
+                                    $addcourseId = array();
+                                    $addcourseId = getAllValues('course', 'course_name', $addName, 'course_id', $conn);
+                                    if(count($addcourseId) === 1){
+                                        $q = "SELECT `course_students` FROM `teacher_enrollment` WHERE `course_id` = ".$addcourseId[0]." AND `teacher_id` = ".$teacherId.";";
+                                        $q = $conn->query($q);
+                                        $q = $q->fetchAll();
+                                        if(count($q) === 0){
+                                            $q = "INSERT INTO `teacher_enrollment` (`teacher_id`, `course_id`, `course_students`) VALUES ('".$teacherId."', '".$addcourseId[0]."', '0');";
+                                            $conn->query($q);
+                                        }
+                                        else{
+                                            //error message
+                                            //echo '<p class="res">111111111!</p>';
+
+                                        }
+                                    }
+                                    else{
+                                        //error message
+                                        //echo '<p class="res">2222222222!</p>';
+                                    }
+
+                                    header("Location:teacher.php");
+                                }
+
+                        ?>
+
+                        
                         <h2 class="welcome">welcome <span><?php print $teacherName; ?></span></h2>
                         
                         <div class="row">
@@ -168,17 +238,17 @@
                                         <div class="col-md-4 column">
                                             <h6 class="title">status</h6>
                                             <?php
-                                            	$currentCourseStartDate;
+                                                $currentCourseStartDate;
                                                 $currentCourseEndDate;
                                                 for ($i = 0; $i<$arrayLength; $i++) {
                                                     $currentCourseStartDate = getSingleValue('course', 'course_id', $courseId[$i], 'course_start_date', $conn);
                                                     $currentCourseEndDate = getSingleValue('course', 'course_id', $courseId[$i], 'course_end_date', $conn);
                                                     if(date("Y-m-d") < $currentCourseStartDate)
-                                                    	echo '<p>'."Starting soon".'</p>';
+                                                        echo '<p>'."Starting soon".'</p>';
                                                     else if (date("Y-m-d") < $currentCourseEndDate)
-                                                    	echo '<p>'."In progress".'</p>';
+                                                        echo '<p>'."In progress".'</p>';
                                                     else
-                                                    	echo '<p>'."Finished".'</p>';
+                                                        echo '<p>'."Finished".'</p>';
                                                 }
                                             ?>
                                         </div>
@@ -186,21 +256,23 @@
                                         <div class="col-md-4 column">
                                             <h6 class="title">action</h6>
                                             <?php
-                                            	$currentCourseStartDate;
-                                                $currentCourseEndDate;
+                                                $currentCourseStartDate;
+                                                //$currentCourseEndDate;
                                                 for ($i = 0; $i<$arrayLength; $i++) {
                                                     $currentCourseStartDate = getSingleValue('course', 'course_id', $courseId[$i], 'course_start_date', $conn);
-                                                    $currentCourseEndDate = getSingleValue('course', 'course_id', $courseId[$i], 'course_end_date', $conn);
                                                     
                                                     if(date("Y-m-d") < $currentCourseStartDate){
                                                         //can be removed because it didn't start yet
-                                                        echo '<input type="button" value="remove course" class="remove-b custom-button" />';
+                                                        echo '<form action="?remove" method="post">
+                                                            <input type="hidden" name="removeid" value="'.$courseId[$i].'" />
+                                                            <input class="custom-button join-button" type="submit" value="remove" />
+                                                        </form>';
                                                         
                                                     }
-                                                    	
+                                                        
                                                     else {
                                                         // can't be removed
-                                                        echo '<input type="button" value="cant be removed" class="remove-b no-remove custom-button" disabled />';
+                                                        echo "<p>Forbidden<p/>";
                                                     }
                                                 }
                                             ?>
@@ -221,16 +293,16 @@
                         
                         <!-- course form -->
                     <form id="course-form" class="sign-up-form" name="courseForm" action="?new-course" method="post">
-                        <!-- email, Phone -->
+                        <!-- Course Name -->
                         <div class="input-o">
-                            <input type="text" class="custom-input" name="student-name" id="student-name" placeholder="NAME" />
-                            <input type="text" class="custom-input" name="student-email" id="student-email" placeholder="EMAIL" />
+                            <input type="text" class="custom-input" name="courseName" id="student-name" placeholder="Course Name" />
                         </div>
                         
-                        <!-- signup -->
+                        <!-- add/submit -->
                         <div class="input-o">
                             <input type="submit" class="custom-button" id="register-button" value="register course" />
                         </div>
+                        <!--why this line exist ?-->
                         <p id="student-result" class="result"> </p>
                     </form>
                     </div>

@@ -35,6 +35,25 @@
         return $result;
     }
 
+    function getAllInfoByID($tableName, $conn){
+        $allInfo = $conn->query("SELECT * FROM users INNER JOIN ".$tableName." ON users.user_id = ".$tableName.".user_id");
+
+        $allInfo = $allInfo -> fetchAll(PDO::FETCH_ASSOC);
+
+        return $allInfo;
+    }
+
+    function getInfoByID($tableName, $prop, $value, $conn){
+        $q = "SELECT * FROM users INNER JOIN ".$tableName." ON users.user_id = ".$tableName.".user_id WHERE users." .$prop. " = '" .$value. "'";
+        $allInfo = $conn->query($q);
+
+        $allInfo = $allInfo -> fetch(PDO::FETCH_ASSOC);
+
+        return $allInfo;
+    }
+
+
+
     // get all values with no condition
     function getAllValuesNoCondition($tableName, $columnName, $conn) {
         $q = $conn->query("SELECT `$columnName` FROM `$tableName`");

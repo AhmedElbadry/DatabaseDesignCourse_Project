@@ -12,6 +12,7 @@
 }
 body{
     background-color: #293d4e;
+    color: #fff;
 }
 p{
     font-family: roboto_light;
@@ -62,4 +63,13 @@ h5{
 }
 .custom-button:hover{
     background-color: #be5151;
+}
+
+.res {
+    color: #ffffff;
+    font-size: 20px;
+}
+
+.infoTable table {
+    width: 100%;
 }
