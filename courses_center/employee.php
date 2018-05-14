@@ -123,12 +123,16 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 											<td><?php echo $row['user_name'] ?></td>
 											<td><?php echo $row['user_email'] ?></td>
 											<td>
+												<!--
 												<form method="post" action="?studentPage">
 													<input type="text" name="student_id"
 													 value="<?php echo $row['user_id'] ?>"
 													 style="display: none;" />
 													<input type="submit" name="" value="Full Page" />
 												</form>
+											-->
+
+												<button class="fullPageBtn" data-id="<?php echo $row['user_id'] ?>"> Full Page</button>
 										</tr>
 
 										<?php
@@ -145,6 +149,8 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 										echo "yes";
 										$sID =  $_POST['student_id'];
 										$sInfo = getInfoByID('student', 'user_id', $sID, $conn);
+
+										
 
 										echo "<pre class='res'>";
 
@@ -165,9 +171,6 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							Teachers
 							</div>
 							<!-- end teachers controls -->
-
-
-
 
 							<!-- start courses controls -->
 							<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
@@ -206,8 +209,33 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 }
 ?>
 
-
 		<script src="assets/js/jquery-3.2.1.min.js"></script>
 		<script src="assets/js/bootstrap.min.js"></script>
+
+		<script>
+			$(".fullPageBtn").on('click', function(event) {
+				event.preventDefault();
+				console.log("ID=" +$(this).attr("data-id"));
+				$.ajax({
+					url: 'employeeController.php',
+					type: 'POST',
+					//dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+					data: "ID=" +$(this).attr("data-id"),
+				})
+				.done(function(data) {
+					console.log("success");
+					console.log(data);
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+
+			});
+			
+			
+		</script>
     </body>
 </html>

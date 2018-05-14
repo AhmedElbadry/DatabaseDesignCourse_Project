@@ -5,3 +5,5 @@
 
 == Employee ==
 > view, edit, add(students, courses, teachers)
+
+editAuser($table, updates)
