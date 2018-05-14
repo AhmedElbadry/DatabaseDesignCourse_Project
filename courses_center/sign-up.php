@@ -86,11 +86,23 @@
                             <input type="submit" class="custom-button" id="teacher-submit-button" value="sign up" />
                         </div>
                         <p id="teacher-result" class="result"> </p>
+                        
+                        <!-- select example 
+                        <div class="input-o">
+                            <label class="select-label">course name</label>
+                            <select class="selectbox">
+                                <option value="example">example</option>
+                                <option value="example">example</option>
+                            </select>
+                        </div>
+                        -->
                     </form>
                     
                 </div>
             </div>
         </section>
+        
+        
         
         <!-- JQUERY -->
         <script src="assets/js/jquery-3.2.1.min.js"></script>
