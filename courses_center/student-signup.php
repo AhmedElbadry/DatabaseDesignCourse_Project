@@ -1,5 +1,6 @@
 <?php
-    $stName = $_POST["student-name"];
+    $stFName = $_POST["student-fname"];
+    $stLName = $_POST["student-lname"];
     $stEmail = $_POST["student-email"];
     $stPass = $_POST["student-pass"];
     $stPhone = $_POST["student-phone"];
@@ -12,7 +13,7 @@
     } else if ( !isUnique('users', 'user_phone', $stPhone, 'user_phone', $conn) ) {
         echo '<p class="res">This phone number is already registered before!</p>';
     } else {
-        insertUser($stEmail, $stPass, $stName, $stPhone, 's', $conn);
+        insertUser($stEmail, $stPass, $stFName, $stLName, $stPhone, 's', $conn);
         $uId = getSingleValue('users', 'user_email', $stEmail, 'user_id', $conn);
         insertType('student', $uId, $conn);
         session_start();

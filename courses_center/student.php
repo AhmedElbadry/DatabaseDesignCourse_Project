@@ -30,7 +30,8 @@
                             $email = $_SESSION['userEmail'];
                             $userId = getSingleValue('users', 'user_email', $email, 'user_id', $conn);
                             $studentId = getSingleValue('student', 'user_id', $userId, 'student_id', $conn);
-                            $studentName = getSingleValue('users', 'user_id', $userId, 'user_name', $conn);
+                            $studentName = getSingleValue('users', 'user_id', $userId, 'first_name', $conn);
+                            $studentLastName = getSingleValue('users', 'user_id', $userId, 'last_name', $conn);
                             $studentPhone = getSingleValue('users', 'user_id', $userId, 'user_phone', $conn);
                         ?>
                         
@@ -44,7 +45,7 @@
                                 } 
 
                         ?>
-                        <h2 class="welcome">welcome <span><?php print $studentName; ?></span></h2>
+                        <h2 class="welcome">welcome <span><?php print $studentName . " " . $studentLastName; ?></span></h2>
                         
                         
                         <div class="row">
@@ -52,7 +53,7 @@
                             <div class="col-lg-6 offset-lg-3 part">
                                 <div class="panel">
                                     <h3>student information</h3>
-                                    <p>student name: <span><?php print $studentName; ?></span></p>
+                                    <p>student name: <span><?php print $studentName . " " . $studentLastName; ?></span></p>
                                     <p>student ID: <span><?php print $studentId; ?></span></p>
                                     <p>student email: <span class="email"><?php print $email; ?></span></p>
                                     <p>student phone: <span ><?php print $studentPhone; ?></span></p>

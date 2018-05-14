@@ -79,10 +79,10 @@
     }
 
     // function to insert user
-    function insertUser($email, $pass, $name, $phone, $type, $conn) {
-        $q = $conn->prepare("INSERT INTO users (user_email, user_password, user_name, user_phone, user_type)
-        VALUES (?,?,?,?,?)" );
-        $q->execute([$email, $pass, $name, $phone, $type]);
+    function insertUser($email, $pass, $fname, $lname, $phone, $type, $conn) {
+        $q = $conn->prepare("INSERT INTO users (user_email, user_password, first_name, last_name, user_phone, user_type)
+        VALUES (?,?,?,?,?,?)" );
+        $q->execute([$email, $pass, $fname, $lname, $phone, $type]);
     }
 
     // insert student or teacher

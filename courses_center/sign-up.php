@@ -38,9 +38,13 @@
                     ?>
                     <!-- student form -->
                     <form id="student-signup-form" class="sign-up-form" name="studentForm" action="?sign-up1" method="post">
-                        <!-- email, Phone -->
+                        <!-- name -->
                         <div class="input-o">
-                            <input type="text" class="custom-input" name="student-name" id="student-name" placeholder="NAME" />
+                            <input type="text" class="custom-input" name="student-fname" id="student-fname" placeholder="FIRST NAME" />
+                            <input type="text" class="custom-input" name="student-lname" id="student-lname" placeholder="LAST NAME" />
+                        </div>
+                        <!-- email -->
+                        <div class="input-o">
                             <input type="text" class="custom-input" name="student-email" id="student-email" placeholder="EMAIL" />
                         </div>
                         <!-- password -->
@@ -62,7 +66,11 @@
                     <form id="teacher-signup-form" class="sign-up-form" name="teacherForm" action="?sign-up2" method="post">
                         <!-- name, email -->
                         <div class="input-o">
-                            <input type="text" class="custom-input" name="teacher-name" id="teacher-name" placeholder="NAME" />
+                            <input type="text" class="custom-input" name="teacher-fname" id="teacher-fname" placeholder="FIRST NAME" />
+                            <input type="text" class="custom-input" name="teacher-lname" id="teacher-lname" placeholder="LAST NAME" />
+                        </div>
+                        <!-- email -->
+                        <div class="input-o">
                             <input type="text" class="custom-input" name="teacher-email" id="teacher-email" placeholder="EMAIL" />
                         </div>
                         <!-- password -->
