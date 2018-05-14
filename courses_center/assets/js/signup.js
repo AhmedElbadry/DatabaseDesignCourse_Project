@@ -1,12 +1,14 @@
 /*global document, $*/
 $(document).ready(function () {
     
-    var studentName = $('#student-name'),
+    var studentFName = $('#student-fname'),
+        studentLName = $('#student-lname'),
         studentEmail = $('#student-email'),
         studentPass = $('#student-pass'),
         studentPhone = $('#student-phone'),
         studentResult = $('#student-result'),
-        teacherName = $('#teacher-email'),
+        teacherFName = $('#teacher-fname'),
+        teacherLName = $('#teacher-lname'),
         teacherEmail = $('#teacher-email'),
         teacherPass = $('#teacher-pass'),
         teacherPhone = $('#teacher-phone'),
@@ -21,9 +23,14 @@ $(document).ready(function () {
     }
     
     function studentValidation(event) {
-        if(isEmpty(studentName)){
+        if(isEmpty(studentFName)){
             event.preventDefault();
-            studentResult.text('please enter your name');
+            studentResult.text('please enter your first name');
+            return false;
+        }
+        if(isEmpty(studentLName)){
+            event.preventDefault();
+            studentResult.text('please enter your last name');
             return false;
         }
         if(isEmpty(studentEmail)){
@@ -44,10 +51,16 @@ $(document).ready(function () {
         
         return true;
     }
+    
     function teacherValidation(event) {
-        if(isEmpty(teacherName)){
+        if(isEmpty(teacherFName)){
             event.preventDefault();
-            teacherResult.text('please enter your name');
+            teacherResult.text('please enter your first name');
+            return false;
+        }
+        if(isEmpty(teacherLName)){
+            event.preventDefault();
+            teacherResult.text('please enter your last name');
             return false;
         }
         if(isEmpty(teacherEmail)){

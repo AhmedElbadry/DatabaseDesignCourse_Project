@@ -73,3 +73,26 @@ h5{
 .infoTable table {
     width: 100%;
 }
+.selectbox{
+    padding: 15px 40px;
+    text-transform: capitalize;
+    outline: 0;
+    border: 0;
+    transition: all .3s ease-in-out;
+    color: #fff;
+    background-color: #253645;
+    font-size: 18px;
+}
+.select-label{
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 1px;
+    word-spacing: 5px;
+    margin-right: 20px;
+}
+.selectbox option{
+    height: 50px;
+    transition: all .3s ease-in-out;
+    outline: 0;
+    border: 0;
+}
