@@ -144,25 +144,6 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 									</table>
 								</div>
-								<?php
-									if(isset($_GET['studentPage'])){
-										echo "yes";
-										$sID =  $_POST['student_id'];
-										$sInfo = getInfoByID('student', 'user_id', $sID, $conn);
-
-										
-
-										echo "<pre class='res'>";
-
-										print_r($sInfo);
-
-										echo "</pre>";
-
-
-									}else{
-										echo "<h1>no</h1>";
-									}
-								?>
 							</div>
 							<!-- end students controls -->
 
@@ -187,10 +168,17 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							</div>
 							<!-- end employees controls -->
 							<?php } ?>
-
-
 						</div>
 						<!-- end tabs contents -->
+
+						<!-- start server response -->
+						<div class="serverRes">
+
+							
+						</div>
+						<!-- end server response -->
+
+
 		        	</div>
 		        </div>
 			</div>
@@ -224,7 +212,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 				})
 				.done(function(data) {
 					console.log("success");
-					console.log(data);
+					$(".serverRes").html(data);
 				})
 				.fail(function() {
 					console.log("error");
