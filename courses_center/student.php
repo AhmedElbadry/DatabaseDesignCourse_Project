@@ -146,7 +146,7 @@
                                                 $currentTeacher;
                                                 for ($i = 0; $i<$teacherArrayLength; $i++) {
                                                     $currentTeacherId = getSingleValue('teacher', 'teacher_id', $teacherId[$i], 'user_id', $conn);
-                                                    $currentTeacher = getSingleValue('users', 'user_id', $currentTeacherId, 'user_name', $conn);
+                                                    $currentTeacher = getSingleValue('users', 'user_id', $currentTeacherId, 'first_name', $conn);
                                                     echo '<p>'.$currentTeacher.'</p>';
                                                 }
                                             ?>
@@ -288,7 +288,7 @@
                                                     if (!$found){
                                                         $currentTId = getSingleValue('teacher_enrollment', 'course_id', $allCoursesId[$i], 'teacher_id', $conn);
                                                         $currentUId = getSingleValue('teacher', 'teacher_id', $currentTId, 'user_id', $conn);
-                                                        $currentTName = getSingleValue('users', 'user_id', $currentUId, 'user_name', $conn);
+                                                        $currentTName = getSingleValue('users', 'user_id', $currentUId, 'first_name', $conn);
                                                         echo '<p>'.$currentTName.'</p>';
                                                     }
                                                 }

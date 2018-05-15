@@ -14,7 +14,7 @@
     } else {
         insertUser($tEmail, $tPass, $tFName, $tLName, $tPhone, 't', $conn);
         $uId = getSingleValue('users', 'user_email', $tEmail, 'user_id', $conn);
-        insertType('teacher', $uId, $conn);
+        //insertType('teacher', $uId, $conn);
         session_start();
         header("Location:index.php?signed=true");
     }

@@ -28,7 +28,7 @@
                             $email = $_SESSION['userEmail'];
                             $userId = getSingleValue('users', 'user_email', $email, 'user_id', $conn);
                             $teacherId = getSingleValue('teacher', 'user_id', $userId, 'teacher_id', $conn);
-                            $teacherName = getSingleValue('users', 'user_id', $userId, 'user_name', $conn);
+                            $teacherName = getSingleValue('users', 'user_id', $userId, 'first_name', $conn);
                             $teacherPhone = getSingleValue('users', 'user_id', $userId, 'user_phone', $conn);
                             //calculate and update earnings from his enrollments and number of students in each enrollment.
                             $courseId = array();

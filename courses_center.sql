@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2018 at 12:29 PM
+-- Generation Time: May 15, 2018 at 02:53 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -37,6 +37,15 @@ CREATE TABLE `course` (
   `course_end_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`course_id`, `course_name`, `course_price`, `course_sessions`, `course_start_date`, `course_end_date`) VALUES
+(1, 'Maths', 50, 10, '2018-05-31', '2018-06-30'),
+(2, 'Science', 100, 20, '2018-06-14', '2018-07-11'),
+(3, 'English', 150, 15, '2018-05-30', '2018-06-22');
+
 -- --------------------------------------------------------
 
 --
@@ -48,6 +57,14 @@ CREATE TABLE `employee` (
   `user_id` int(11) UNSIGNED NOT NULL,
   `is_manager` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`employee_id`, `user_id`, `is_manager`) VALUES
+(1, 50, 0),
+(2, 51, 0);
 
 -- --------------------------------------------------------
 
@@ -74,6 +91,17 @@ CREATE TABLE `student` (
   `user_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `student`
+--
+
+INSERT INTO `student` (`student_id`, `user_id`) VALUES
+(23, 45),
+(24, 48),
+(26, 53),
+(27, 54),
+(28, 55);
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +113,14 @@ CREATE TABLE `student_enrollment` (
   `course_id` int(11) UNSIGNED NOT NULL,
   `teacher_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `student_enrollment`
+--
+
+INSERT INTO `student_enrollment` (`student_id`, `course_id`, `teacher_id`) VALUES
+(23, 2, 16),
+(28, 1, 15);
 
 -- --------------------------------------------------------
 
@@ -98,6 +134,14 @@ CREATE TABLE `teacher` (
   `teacher_earnings` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `teacher`
+--
+
+INSERT INTO `teacher` (`teacher_id`, `user_id`, `teacher_earnings`) VALUES
+(15, 46, 0),
+(16, 47, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -109,6 +153,14 @@ CREATE TABLE `teacher_enrollment` (
   `course_id` int(11) UNSIGNED NOT NULL,
   `course_students` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `teacher_enrollment`
+--
+
+INSERT INTO `teacher_enrollment` (`teacher_id`, `course_id`, `course_students`) VALUES
+(15, 1, 0),
+(16, 2, 50);
 
 -- --------------------------------------------------------
 
@@ -125,6 +177,51 @@ CREATE TABLE `users` (
   `user_phone` varchar(15) NOT NULL,
   `user_type` enum('s','e','t') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `user_email`, `user_password`, `first_name`, `last_name`, `user_phone`, `user_type`) VALUES
+(45, 'ahmed2lbadry@gmail.com', '1111', 'Ahmed', 'El Badry', '01149505873', 's'),
+(46, 'mena@gmail.com', '1111', 'Mena', 'Fayez', '0125656564', 't'),
+(47, 'khaled@gmail.com', '1111', 'Khaled', 'Mohamed', '01145278242', 't'),
+(48, 'remon@gmail.com', '1111', 'Remon', 'Fawzy', '0124527145', 's'),
+(50, 'admin@gmail.com', '1111', 'admin', 'admin', '011111111', 'e'),
+(51, 'hassan@gmail.com', '1111', 'Hassan', 'Raafat', '01152452256', 'e'),
+(53, 'mo@gmail.com', '1111', 'Mohamed', 'Salah', '011011011011', 's'),
+(54, 'islam@gmail.com', '1111', 'islam', 'mohamed', '0101411041', 's'),
+(55, 'abdo@gmail.com', '1111', 'abdo', 'mohamed', '01424754', 's');
+
+--
+-- Triggers `users`
+--
+DELIMITER $$
+CREATE TRIGGER `contacts_after_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
+  
+  IF(NEW.user_type = 's') THEN
+    INSERT INTO student
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  ELSEIF(NEW.user_type = 't') THEN
+    INSERT INTO teacher
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  ELSEIF(NEW.user_type = 'e') THEN
+    INSERT INTO employee
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  END IF;
+
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -199,31 +296,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `course_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `employee_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `student_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `teacher`
 --
 ALTER TABLE `teacher`
-  MODIFY `teacher_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `teacher_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `user_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Constraints for dumped tables

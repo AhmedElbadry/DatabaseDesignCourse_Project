@@ -1,0 +1,71 @@
+delimiter //
+ CREATE TRIGGER users AFTER UPDATE ON account
+       FOR EACH ROW
+       BEGIN
+            IF (NEW.user_tybe = "s")THEN
+                 INSERT INTO student (`user_id`) VALUES (NEW.user_id)
+            END IF;
+       END //
+delimiter;
+
+
+INSERT INTO contacts_audit
+   ( contact_id,
+     created_date,
+     created_by)
+   VALUES
+   ( NEW.contact_id,
+     SYSDATE(),
+     NEW.first_name );
+
+
+
+BEGIN
+
+   -- Insert record into audit table
+   INSERT INTO student
+   ( user_id )
+   VALUES
+   (NEW.user_id);
+
+END
+
+
+
+
+
+
+-- This is the triger code
+-- It adds the users to its subtype table
+
+DELIMITER //
+
+CREATE TRIGGER contacts_after_insert
+AFTER INSERT
+   ON users FOR EACH ROW
+
+BEGIN
+  
+  IF(NEW.user_type = 's') THEN
+    INSERT INTO student
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  ELSEIF(NEW.user_type = 't') THEN
+    INSERT INTO teacher
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  ELSEIF(NEW.user_type = 'e') THEN
+    INSERT INTO employee
+    ( user_id )
+    VALUES
+    (NEW.user_id);
+
+  END IF;
+
+END; //
+
+DELIMITER ;
