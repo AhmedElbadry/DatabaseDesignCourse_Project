@@ -38,15 +38,17 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 
 	            //get all students info
-	            $allStudentsInfo = $conn->query("SELECT * FROM users INNER JOIN student ON users.user_id = student.user_id ");
-	            $allStudentsInfo = $allStudentsInfo -> fetchAll(PDO::FETCH_ASSOC);
+	            $allStudentsInfo = getAllInfoByID('student', $conn);
+
+	            //get all teachers info
+	            $allTeachersInfo = getAllInfoByID('teacher', $conn);
 
 
 
 
 	            echo "<pre class='res'>";
 
-	            print_r($allEmployeeInfo);
+	            print_r($allTeachersInfo);
 
 	            echo "</pre>";
 	        ?>
@@ -61,7 +63,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 	                } 
 
 	        ?>
-	        <h2 class="welcome">welcome <span><?php print $allEmployeeInfo['user_name']; ?></span></h2>
+	        <h2 class="welcome">welcome <span><?php echo $allEmployeeInfo['first_name']; ?></span></h2>
 	        
 	        
 	        <div class="row">
@@ -69,7 +71,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 	            <div class="col-lg-6 offset-lg-3 part">
 	                <div class="panel">
 	                    <h3>employee information</h3>
-	                    <p>employee name: <span><?php print $allEmployeeInfo['user_name']; ?></span></p>
+	                    <p>employee name: <span><?php echo $allEmployeeInfo['first_name']." ".$allEmployeeInfo['last_name'] ; ?></span></p>
 	                    <p>employee ID: <span><?php print $allEmployeeInfo['employee_id']; ?></span></p>
 	                    <p>employee email: <span class="email"><?php print $allEmployeeInfo['user_email']; ?></span></p>
 	                    <p>employee phone: <span ><?php print $allEmployeeInfo['user_phone']; ?></span></p>
@@ -120,19 +122,15 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 										<tr>
 											<td><?php echo $row['student_id'] ?></td>
-											<td><?php echo $row['user_name'] ?></td>
+											<td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
 											<td><?php echo $row['user_email'] ?></td>
 											<td>
-												<!--
-												<form method="post" action="?studentPage">
-													<input type="text" name="student_id"
-													 value="<?php echo $row['user_id'] ?>"
-													 style="display: none;" />
-													<input type="submit" name="" value="Full Page" />
-												</form>
-											-->
 
-												<button class="fullPageBtn" data-id="<?php echo $row['user_id'] ?>"> Full Page</button>
+												<button
+												class="fullPageBtn"
+												data-id="<?php echo $row['user_id'] ?>"
+												data-table="student"
+												 > Full Page</button>
 										</tr>
 
 										<?php
@@ -149,7 +147,41 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 							<!-- start teachers controls -->
 							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-							Teachers
+								<div class="infoTable">
+									<table>
+										<tr>
+											<td>Student ID</td>
+											<td>Student name</td>
+											<td>Student Email</td>
+											<td>&nbsp;</td>
+										</tr>
+
+										<?php
+										foreach ($allTeachersInfo as $row) {
+										?>
+
+										<tr>
+											<td><?php echo $row['teacher_id'] ?></td>
+											<td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
+											<td><?php echo $row['user_email'] ?></td>
+											<td>
+
+												<button
+												class="fullPageBtn"
+												data-id="<?php echo $row['user_id'] ?>"
+												data-table="teacher"
+												 > Full Page</button>
+										</tr>
+
+										<?php
+										}
+										?>
+
+
+
+
+									</table>
+								</div>
 							</div>
 							<!-- end teachers controls -->
 
@@ -208,7 +240,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 					url: 'employeeController.php',
 					type: 'POST',
 					//dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-					data: "ID=" +$(this).attr("data-id"),
+					data: "ID=" +$(this).attr("data-id") + "&table=" + $(this).attr("data-table"),
 				})
 				.done(function(data) {
 					console.log("success");
@@ -221,6 +253,10 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 					console.log("complete");
 				});
 
+			});
+
+			$(".nav-link").on("click", function(){
+				$(".serverRes").html("");
 			});
 			
 			
