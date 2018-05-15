@@ -28,7 +28,8 @@
                             $email = $_SESSION['userEmail'];
                             $userId = getSingleValue('users', 'user_email', $email, 'user_id', $conn);
                             $teacherId = getSingleValue('teacher', 'user_id', $userId, 'teacher_id', $conn);
-                            $teacherName = getSingleValue('users', 'user_id', $userId, 'first_name', $conn);
+                            $teacherFName = getSingleValue('users', 'user_id', $userId, 'first_name', $conn);
+                            $teacherLName = getSingleValue('users', 'user_id', $userId, 'last_name', $conn);
                             $teacherPhone = getSingleValue('users', 'user_id', $userId, 'user_phone', $conn);
                             //calculate and update earnings from his enrollments and number of students in each enrollment.
                             $courseId = array();
@@ -103,14 +104,14 @@
                         ?>
 
                         
-                        <h2 class="welcome">welcome <span><?php print $teacherName; ?></span></h2>
+                        <h2 class="welcome">welcome <span><?php print $teacherFName; ?> <?php print $teacherLName; ?></span></h2>
                         
                         <div class="row">
                             <!-- teacher info -->
                             <div class="col-lg-6 offset-lg-3 part">
                                 <div class="panel">
                                     <h3>Teacher information</h3>
-                                    <p>Teacher name: <span><?php print $teacherName; ?></span></p>
+                                    <p>Teacher name: <span><?php print $teacherFName; ?> <?php print $teacherLName; ?></span></p>
                                     <p>Teacher ID: <span><?php print $teacherId; ?></span></p>
                                     <p>Teacher email: <span class="email"><?php print $email; ?></span></p>
                                     <p>Teacher phone: <span ><?php print $teacherPhone; ?></span></p>
@@ -293,15 +294,35 @@
                         
                         <!-- course form -->
                     <form id="course-form" class="sign-up-form" name="courseForm" action="?new-course" method="post">
-                        <!-- Course Name -->
+                        <!-- select example -->
+                        <div class="input-o">
+                            <label class="select-label">course name</label>
+                            <select name="courseName" class="selectbox">
+                                <?php
+                                    $courseInfo = $conn->query("SELECT * FROM `course`");
+                                    $courseInfo = $courseInfo->fetchAll();
+                                    $arrayLength = count($courseInfo);
+                                    for ($i = 0; $i<$arrayLength; $i++) {
+                                        $flag = "SELECT `course_students` FROM `teacher_enrollment` WHERE `course_id` = ".$courseInfo[$i]["course_id"]." AND `teacher_id` = ".$teacherId.";";
+                                        $flag = $conn->query($flag);
+                                        $flag = $flag->fetchAll();
+                                        if(date("Y-m-d") < $courseInfo[$i]["course_start_date"] && !$flag)
+                                            echo '<option value="'.$courseInfo[$i]["course_name"].'">'.$courseInfo[$i]["course_name"].'</option>';
+                                    }
+                                ?>
+                            </select>
+                        </div>
+
+                        <!-- Course Name
                         <div class="input-o">
                             <input type="text" class="custom-input" name="courseName" id="student-name" placeholder="Course Name" />
                         </div>
-                        
+                        -->
                         <!-- add/submit -->
                         <div class="input-o">
                             <input type="submit" class="custom-button" id="register-button" value="register course" />
                         </div>
+
                         <!--why this line exist ?-->
                         <p id="student-result" class="result"> </p>
                     </form>
