@@ -306,6 +306,8 @@
                                         $flag = "SELECT `course_students` FROM `teacher_enrollment` WHERE `course_id` = ".$courseInfo[$i]["course_id"]." AND `teacher_id` = ".$teacherId.";";
                                         $flag = $conn->query($flag);
                                         $flag = $flag->fetchAll();
+                                        $flag = count($flag);
+                                        //echo '<option value="'.$flag.'">'.$flag.'</option>';
                                         if(date("Y-m-d") < $courseInfo[$i]["course_start_date"] && !$flag)
                                             echo '<option value="'.$courseInfo[$i]["course_name"].'">'.$courseInfo[$i]["course_name"].'</option>';
                                     }
@@ -313,11 +315,6 @@
                             </select>
                         </div>
 
-                        <!-- Course Name
-                        <div class="input-o">
-                            <input type="text" class="custom-input" name="courseName" id="student-name" placeholder="Course Name" />
-                        </div>
-                        -->
                         <!-- add/submit -->
                         <div class="input-o">
                             <input type="submit" class="custom-button" id="register-button" value="register course" />
