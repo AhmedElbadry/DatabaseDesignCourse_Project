@@ -92,6 +92,15 @@ INNER JOIN course C on SI.course_id = C.course_id
 ?>
 
 <?php
+
+
+}
+
+
+
+
+
+
 /*
 	echo "<pre class='res'>";
 
@@ -105,7 +114,29 @@ CREATE TABLE Hotel (
 	name varchar(50) NOT NULL,
 	address varchar(150) NOT NULL
 );
+CREATE TABLE Guest (
+	guestNo int PRIMARY KEY NOT NULL,
+	name varchar(50) NOT NULL,
+	address varchar(150) NOT NULL
+);
 
+CREATE TABLE booking(
+    bookingNo int PRIMARY KEY NOT NULL,
+    hotelNo int NOT NULL,
+    guestNo int NOT NULL,
+    roomNo int NOT NULL,
+    dataFrom DATE,
+    dataTo DATE,
+    
+    FOREIGN KEY (hotelNo) REFERENCES Hotel(hotelNo),
+    FOREIGN KEY (guestNo) REFERENCES guest(guestNo),
+    FOREIGN KEY (roomNo) REFERENCES Room(roomNo)
+
+);
+
+
+
+--a)
 CREATE TABLE Room(
 	roomNo int PRIMARY KEY NOT NULL,
 	hotelNo int NOT NULL,
@@ -115,15 +146,48 @@ CREATE TABLE Room(
     FOREIGN KEY (hotelNo) REFERENCES Hotel(hotelNo)
 
 );
+
+--b)
+INSERT INTO Hotel(hotelNo, name, address) values (250, 'Sheraton', 'Cairo') 
+
+--c)
+SELECT name, address FROM Guest WHERE address = 'Cairo' ORDER BY name ASC
+
+--d)
+SELECT * FROM Room WHERE (type = 'D' OR type = 'F') AND (price < 100) ORDER BY price ASC
+
+--e)
+SELECT AVG(PRICE) FROM Room WHERE type = 'D'
+
+--f)
+SELECT * FROM booking
+INNER JOIN Hotel ON booking.hotelNo = Hotel.hotelNo AND Hotel.name = 'Sheraton'
+WHERE booking.dataFrom = CURRENT_DATE
+
+--g)
+SELECT price, type FROM Room
+inner JOIN Hotel ON Room.hotelNo = Hotel.hotelNo AND Hotel.name = 'Sheraton'
+
+--h)
+SELECT type, COUNT(type) FROM Room GROUP BY type ORDER BY COUNT(type) DESC LIMIT 1
+
+--i)
+SELECT * FROM Guest
+INNER JOIN booking ON Guest.guestNo = booking.hotelNo AND (CURRENT_DATE BETWEEN booking.dataFrom AND booking.dataTo) 
+inner JOIN Hotel ON booking.hotelNo = Hotel.hotelNo AND Hotel.name = 'Sheraton'
+
+--j)
+SELECT SUM(price) FROM Room
+INNER JOIN booking ON Room.hotelNo = booking.hotelNo AND Room.roomNo = booking.roomNo
+INNER JOIN Hotel ON booking.hotelNo = Hotel.hotelNo AND Hotel.name = 'Sheraton'
+WHERE booking.dataFrom = CURRENT_DATE
+
+
+SELECT * FROM Guest
+INNER JOIN booking ON Guest.guestNo = booking.hotelNo AND (CURRENT_DATE BETWEEN booking.dataFrom AND booking.dataTo) 
+inner JOIN Hotel ON booking.hotelNo = Hotel.hotelNo AND Hotel.name = 'Sheraton'
+
 	*/
-/*
-	"
-
-
-
-
-	"
-*/
-}
-
 ?>
+
+

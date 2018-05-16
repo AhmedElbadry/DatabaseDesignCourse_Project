@@ -43,12 +43,41 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 	            //get all teachers info
 	            $allTeachersInfo = getAllInfoByID('teacher', $conn);
 
+	            //get all courses info
+	            $qs = "
+	            		SELECT * FROM course
+
+
+	            ";
+
+	            $allCoursesInfo = $conn->query($qs);
+
+	            $allCoursesInfo = $allCoursesInfo -> fetchAll(PDO::FETCH_ASSOC);
+
+
+
+	            //scheduled courses
+	            $qs = "
+	            		SELECT * FROM course
+	            		LEFT OUTER JOIN teacher_enrollment
+	            		ON course.course_id = teacher_enrollment.course_id
+	            		LEFT OUTER JOIN teacher
+	            		ON teacher_enrollment.teacher_id = teacher.teacher_id
+	            		LEFT OUTER JOIN users
+	            		ON teacher.user_id = users.user_id
+	            ";
+
+	            $allScheduledCourses = $conn->query($qs);
+	            $allScheduledCourses = $allScheduledCourses -> fetchAll(PDO::FETCH_ASSOC);
+
+
+
 
 
 
 	            echo "<pre class='res'>";
 
-	            print_r($allTeachersInfo);
+	            print_r($allScheduledCourses);
 
 	            echo "</pre>";
 	        ?>
@@ -88,13 +117,17 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 					<!-- start side buttons -->
 					<div class="col-md-3">
 						<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Students</a>
-							<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Teachers</a>
-							<a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Courses</a>
+							<a class="nav-link active" id="studentsTap" data-toggle="pill" href="#studentsTap_" role="tab" aria-controls="studentsTap_" aria-selected="true">Students</a>
+
+							<a class="nav-link" id="teachersTap" data-toggle="pill" href="#teachersTap_" role="tab" aria-controls="teachersTap_" aria-selected="false">Teachers</a>
+
+							<a class="nav-link" id="coursesTap" data-toggle="pill" href="#coursesTap_" role="tab" aria-controls="coursesTap_" aria-selected="false">Courses</a>
+
+							<a class="nav-link" id="scheduledCoursesTap" data-toggle="pill" href="#scheduledCoursesTap_" role="tab" aria-controls="coursesTap_" aria-selected="false">Scheduled Courses</a>
 
 							<?php if($allEmployeeInfo['is_manager']){ ?>
 
-							<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Employees</a>
+							<a class="nav-link" id="employeeTap" data-toggle="pill" href="#employeeTap_" role="tab" aria-controls="employeeTap_" aria-selected="false">Employees</a>
 
 							<?php } ?>
 						</div>
@@ -106,7 +139,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 						<div class="tab-content" id="v-pills-tabContent">
 
 							<!-- start students controls -->
-							<div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+							<div class="tab-pane fade show active" id="studentsTap_" role="tabpanel" aria-labelledby="studentsTap">
 								<div class="infoTable">
 									<table>
 										<tr>
@@ -130,7 +163,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 												class="fullPageBtn"
 												data-id="<?php echo $row['user_id'] ?>"
 												data-table="student"
-												 > Full Page</button>
+												 > Full Info</button>
 										</tr>
 
 										<?php
@@ -146,13 +179,13 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							<!-- end students controls -->
 
 							<!-- start teachers controls -->
-							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+							<div class="tab-pane fade" id="teachersTap_" role="tabpanel" aria-labelledby="teachersTap">
 								<div class="infoTable">
 									<table>
 										<tr>
-											<td>Student ID</td>
-											<td>Student name</td>
-											<td>Student Email</td>
+											<td>Teacher ID</td>
+											<td>Teacher name</td>
+											<td>Teacher Email</td>
 											<td>&nbsp;</td>
 										</tr>
 
@@ -170,7 +203,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 												class="fullPageBtn"
 												data-id="<?php echo $row['user_id'] ?>"
 												data-table="teacher"
-												 > Full Page</button>
+												 > Full Info</button>
 										</tr>
 
 										<?php
@@ -186,17 +219,148 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							<!-- end teachers controls -->
 
 							<!-- start courses controls -->
-							<div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-							Courses
+							<div class="tab-pane fade" id="coursesTap_" role="tabpanel" aria-labelledby="coursesTap">
+								<div class="infoTable">
+									<table>
+										<tr>
+											<td>Course ID</td>
+											<td>Course name</td>
+											<td>Course Price</td>
+											<td>Course Session</td>
+											<td>&nbsp;</td>
+										</tr>
+
+										<?php
+										foreach ($allCoursesInfo as $row) {
+										?>
+
+										<tr>
+											<td><?php echo $row['course_id'] ?></td>
+											<td><?php echo $row['course_name'] ?></td>
+											<td><?php echo $row['course_price'] ?></td>
+											<td><?php echo $row['course_sessions'] ?></td>
+											<td>
+
+												<button
+												class="fullPageBtn"
+												data-id="<?php echo $row['user_id'] ?>"
+												data-table="teacher"
+												 > Full Info</button>
+										</tr>
+
+										<?php
+										}
+										?>
+
+
+
+
+									</table>
+								</div>
 							</div>
 							<!-- end courses controls -->
 
+							<!-- start scheduled courses controls -->
+							<div class="tab-pane fade" id="scheduledCoursesTap_" role="tabpanel" aria-labelledby="scheduledCoursesTap">
+								<div class="infoTable">
+									<table>
+										<tr>
+											<td>Course ID</td>
+											<td>Course name</td>
+											<td>Teacher Name</td>
+											<td>Course Price</td>
+											<td>Course Session</td>
+											<td>&nbsp;</td>
+										</tr>
+
+										<?php
+										foreach ($allScheduledCourses as $row) {
+										?>
+
+										<tr>
+											<td><?php echo $row['course_id'] ?></td>
+											<td><?php echo $row['course_name'] ?></td>
+											<td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
+											<td><?php echo $row['course_price'] ?></td>
+											<td><?php echo $row['course_sessions'] ?></td>
+											<td>
+
+												<button
+												class="fullPageBtn"
+												data-id="<?php echo $row['user_id'] ?>"
+												data-table="teacher"
+												 > Full Info</button>
+										</tr>
+
+										<?php
+										}
+										?>
 
 
-							<?php if($allEmployeeInfo['is_manager']){ ?>
+
+
+									</table>
+								</div>
+							</div>
+							<!-- end scheduled courses controls -->
+
+
+
+							<?php if($allEmployeeInfo['is_manager']){
+
+								$qs = "
+									SELECT * FROM employee
+									INNER JOIN users ON employee.user_id = users.user_id
+								";
+
+								$allEmployeesInfo = $conn -> query($qs);
+
+								$allEmployeesInfo = $allEmployeesInfo -> fetchAll(PDO::FETCH_ASSOC);
+
+								echo "<pre class='res'>";
+
+								print_r($allEmployeesInfo);
+
+								echo "</pre>";
+
+							 ?>
 							<!-- start employees controls -->
-							<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-							Employees
+							<div class="tab-pane fade" id="employeeTap_" role="tabpanel" aria-labelledby="employeeTap">
+								<div class="infoTable">
+									<table>
+										<tr>
+											<td>Teacher ID</td>
+											<td>Teacher name</td>
+											<td>Teacher Email</td>
+											<td>&nbsp;</td>
+										</tr>
+
+										<?php
+										foreach ($allEmployeeInfo as $row) {
+										?>
+
+										<tr>
+											<td><?php echo $row['teacher_id'] ?></td>
+											<td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
+											<td><?php echo $row['user_email'] ?></td>
+											<td>
+
+												<button
+												class="fullPageBtn"
+												data-id="<?php echo $row['user_id'] ?>"
+												data-table="teacher"
+												 > Full Info</button>
+										</tr>
+
+										<?php
+										}
+										?>
+
+
+
+
+									</table>
+								</div>
 							</div>
 							<!-- end employees controls -->
 							<?php } ?>
