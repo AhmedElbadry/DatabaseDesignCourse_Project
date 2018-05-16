@@ -74,12 +74,12 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 
 
-
+/*
 	            echo "<pre class='res'>";
 
 	            print_r($allScheduledCourses);
 
-	            echo "</pre>";
+	            echo "</pre>";*/
 	        ?>
 	        
 	        <?php
@@ -117,13 +117,13 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 					<!-- start side buttons -->
 					<div class="col-md-3">
 						<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							<a class="nav-link active" id="studentsTap" data-toggle="pill" href="#studentsTap_" role="tab" aria-controls="studentsTap_" aria-selected="true">Students</a>
+							<a class="nav-link active" id="studentsTab" data-toggle="pill" href="#studentsTab_" role="tab" aria-controls="studentsTab_" aria-selected="true">Students</a>
 
-							<a class="nav-link" id="teachersTap" data-toggle="pill" href="#teachersTap_" role="tab" aria-controls="teachersTap_" aria-selected="false">Teachers</a>
+							<a class="nav-link" id="teachersTab" data-toggle="pill" href="#teachersTab_" role="tab" aria-controls="teachersTab_" aria-selected="false">Teachers</a>
 
-							<a class="nav-link" id="coursesTap" data-toggle="pill" href="#coursesTap_" role="tab" aria-controls="coursesTap_" aria-selected="false">Courses</a>
+							<a class="nav-link" id="coursesTab" data-toggle="pill" href="#coursesTab_" role="tab" aria-controls="coursesTab_" aria-selected="false">Courses</a>
 
-							<a class="nav-link" id="scheduledCoursesTap" data-toggle="pill" href="#scheduledCoursesTap_" role="tab" aria-controls="coursesTap_" aria-selected="false">Scheduled Courses</a>
+							<a class="nav-link" id="scheduledCoursesTab" data-toggle="pill" href="#scheduledCoursesTab_" role="tab" aria-controls="coursesTab_" aria-selected="false">Scheduled Courses</a>
 
 							<?php if($allEmployeeInfo['is_manager']){ ?>
 
@@ -139,7 +139,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 						<div class="tab-content" id="v-pills-tabContent">
 
 							<!-- start students controls -->
-							<div class="tab-pane fade show active" id="studentsTap_" role="tabpanel" aria-labelledby="studentsTap">
+							<div class="tab-pane fade show active" id="studentsTab_" role="tabpanel" aria-labelledby="studentsTab">
 								<div class="infoTable">
 									<table>
 										<tr>
@@ -179,7 +179,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							<!-- end students controls -->
 
 							<!-- start teachers controls -->
-							<div class="tab-pane fade" id="teachersTap_" role="tabpanel" aria-labelledby="teachersTap">
+							<div class="tab-pane fade" id="teachersTab_" role="tabpanel" aria-labelledby="teachersTab">
 								<div class="infoTable">
 									<table>
 										<tr>
@@ -219,7 +219,7 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 							<!-- end teachers controls -->
 
 							<!-- start courses controls -->
-							<div class="tab-pane fade" id="coursesTap_" role="tabpanel" aria-labelledby="coursesTap">
+							<div class="tab-pane fade" id="coursesTab_" role="tabpanel" aria-labelledby="coursesTab">
 								<div class="infoTable">
 									<table>
 										<tr>
@@ -243,9 +243,10 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 												<button
 												class="fullPageBtn"
-												data-id="<?php echo $row['user_id'] ?>"
-												data-table="teacher"
-												 > Full Info</button>
+												data-id="<?php echo $row['course_id'] ?>"
+												data-table="course"
+												data-action="delete"
+												 > DELETE</button>
 										</tr>
 
 										<?php
@@ -256,12 +257,18 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 
 									</table>
+
+									<button class="fullPageBtn custom-button addCourseBn"
+									data-action="addCf"
+									>
+										Add new course
+									</button>
 								</div>
 							</div>
 							<!-- end courses controls -->
 
 							<!-- start scheduled courses controls -->
-							<div class="tab-pane fade" id="scheduledCoursesTap_" role="tabpanel" aria-labelledby="scheduledCoursesTap">
+							<div class="tab-pane fade" id="scheduledCoursesTab_" role="tabpanel" aria-labelledby="scheduledCoursesTab">
 								<div class="infoTable">
 									<table>
 										<tr>
@@ -270,7 +277,6 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 											<td>Teacher Name</td>
 											<td>Course Price</td>
 											<td>Course Session</td>
-											<td>&nbsp;</td>
 										</tr>
 
 										<?php
@@ -285,11 +291,6 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 											<td><?php echo $row['course_sessions'] ?></td>
 											<td>
 
-												<button
-												class="fullPageBtn"
-												data-id="<?php echo $row['user_id'] ?>"
-												data-table="teacher"
-												 > Full Info</button>
 										</tr>
 
 										<?php
@@ -317,38 +318,36 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 
 								$allEmployeesInfo = $allEmployeesInfo -> fetchAll(PDO::FETCH_ASSOC);
 
-								echo "<pre class='res'>";
-
-								print_r($allEmployeesInfo);
-
-								echo "</pre>";
-
 							 ?>
 							<!-- start employees controls -->
 							<div class="tab-pane fade" id="employeeTap_" role="tabpanel" aria-labelledby="employeeTap">
 								<div class="infoTable">
 									<table>
 										<tr>
-											<td>Teacher ID</td>
-											<td>Teacher name</td>
-											<td>Teacher Email</td>
+											<td>Employee ID</td>
+											<td>Employee name</td>
+											<td>Employee Email</td>
+											<td>Employee Phone</td>
+											<td>Is Admin</td>
 											<td>&nbsp;</td>
 										</tr>
 
 										<?php
-										foreach ($allEmployeeInfo as $row) {
+										foreach ($allEmployeesInfo as $row) {
 										?>
 
 										<tr>
-											<td><?php echo $row['teacher_id'] ?></td>
+											<td><?php echo $row['employee_id'] ?></td>
 											<td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
 											<td><?php echo $row['user_email'] ?></td>
+											<td><?php echo $row['user_phone'] ?></td>
+											<td><?php echo $row['is_manager'] ?></td>
 											<td>
 
 												<button
 												class="fullPageBtn"
 												data-id="<?php echo $row['user_id'] ?>"
-												data-table="teacher"
+												data-table="employee"
 												 > Full Info</button>
 										</tr>
 
@@ -397,18 +396,36 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 		<script src="assets/js/bootstrap.min.js"></script>
 
 		<script>
-			$(".fullPageBtn").on('click', function(event) {
+			function myAction(){
+				console.log("ccc");
+				var data = "";
+				if($(this).hasClass("addCourseBnSubmit")){
+
+					data = "courseName=" +$("#courseName").val() +
+					"&coursePrice=" + $("#coursePrice").val() +
+					"&courseSessions=" + $("#courseSessions").val() +
+					"&ID="+
+					"&table="
+
+					+ "&action=addC" ;
+					console.log(data);
+				}else{
+					data = "ID=" +$(this).attr("data-id") + "&table=" + $(this).attr("data-table") 
+					+ "&action=" + $(this).attr("data-action");
+				}
+
 				event.preventDefault();
 				console.log("ID=" +$(this).attr("data-id"));
 				$.ajax({
 					url: 'employeeController.php',
 					type: 'POST',
 					//dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-					data: "ID=" +$(this).attr("data-id") + "&table=" + $(this).attr("data-table"),
+					data: data,
 				})
 				.done(function(data) {
 					console.log("success");
 					$(".serverRes").html(data);
+					console.log(data);
 				})
 				.fail(function() {
 					console.log("error");
@@ -416,8 +433,8 @@ if (isset($_SESSION['logged']) && $_SESSION['type'] == 'e') {
 				.always(function() {
 					console.log("complete");
 				});
-
-			});
+			}
+			$(".fullPageBtn").on('click', myAction);
 
 			$(".nav-link").on("click", function(){
 				$(".serverRes").html("");
